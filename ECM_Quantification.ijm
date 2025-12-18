@@ -47,13 +47,13 @@ macro "ECM_Quantification"{
 		run("Dilate", "stack");
 		outputFilePath = outputChildDir + File.separator() + outputFilename + "_mask.tiff";
 		print("Saving " + outputFilePath);
-		saveAs(outputFilePath);
+		run("Bio-Formats Exporter", "save=[" + outputFilePath + "] compression=LZW");
 		run("Connected Components Labeling", "connectivity=6 type=[16 bits]");
-		run("Remove Largest Label");
+
 		run("Label Size Filtering", "operation=Greater_Than size=" + MIN_VOLUME);
 		outputFilePath = outputChildDir + File.separator() + outputFilename + "_segmentation.tiff";
 		print("Saving " + outputFilePath);
-		saveAs(outputFilePath);
+		run("Bio-Formats Exporter", "save=[" + outputFilePath + "] compression=LZW");
 		close("\\Others");
 		run("Analyze Regions 3D", "volume surface_area sphericity bounding_box centroid equivalent_ellipsoid surface_area_method=[Crofton (13 dirs.)] euler_connectivity=6");
 		outputFilePath = outputChildDir + File.separator() + outputFilename + ".csv";
